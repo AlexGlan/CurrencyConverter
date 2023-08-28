@@ -1,0 +1,9 @@
+.vscode/
+.idea/
+target/
+src/main/resources/
+*.class
+*.log
+*.jar
+*.war
+*.ear
