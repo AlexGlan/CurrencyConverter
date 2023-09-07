@@ -13,5 +13,6 @@ mvn exec:java
 ![Screenshot](./screenshots/screenshot.png)
 
 ## Notes
+- Requires Maven installed.
 - Currently only supports 18 currencies.
 - API used: https://exchangerate.host.
