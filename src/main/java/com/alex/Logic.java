@@ -24,15 +24,16 @@ import org.json.JSONObject;
 public class Logic {
     UI ui;
 
-    String convertFrom = "NZD"; 
-    String convertTo = "NZD"; // default currency
     BigDecimal rate, result;
     JComboBox<String> currencyBoxFrom;
     JComboBox<String> currencyBoxTo;
     JButton[] numButtons = new JButton[11];
     JButton[] funButtons = new JButton[4];
     JButton decButton, clrButton, delButton, equButton;
-    
+    // Set default currency
+    String convertFrom = "NZD"; 
+    String convertTo = "NZD";
+    // Supported currencies
     HashMap<String, String> currencies = new HashMap<String, String>() {{
         put("Euro", "EUR");
         put("United States Dollar", "USD");
@@ -112,6 +113,7 @@ public class Logic {
         ui.configureButtonLayout(numButtons, funButtons);
     }
 
+    // Retrieves real-time exchange rate
     private void getExchangeRate() throws ClientProtocolException, IOException {
         String URL = "https://api.exchangerate.host/convert"
                 + "?from=" + convertFrom
@@ -134,24 +136,26 @@ public class Logic {
         }
     }
 
+    // Calculate result of the conversion
     private void calculateResult(BigDecimal amount) {
         result = rate.multiply(amount)
                 .setScale(2, RoundingMode.HALF_UP);
     }
 
+    // Add functionality to buttons
     private class ButtonListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
             JTextField inputField = ui.getInputField();
             JTextField outputField = ui.getOutputField();
-            // Retrieve currency symbol
+            // Get currency symbol
             if (e.getSource() == currencyBoxFrom) {
                 convertFrom = currencies.get(currencyBoxFrom.getSelectedItem());
             }
             if (e.getSource() == currencyBoxTo) {
                 convertTo = currencies.get(currencyBoxTo.getSelectedItem());
             }
-            // Number buttons
+            // Functionality for number buttons
             for (int i = 0; i < numButtons.length; i++) {
                 if (e.getSource() == numButtons[i]) {
                     if (inputField.getText().equals("0")) {
@@ -168,7 +172,7 @@ public class Logic {
                     }
                 }
             }
-            // Function buttons
+            // Functionality for operation buttons
             // Delete last digit
             if (e.getSource() == delButton) {
                 String str = inputField.getText();
@@ -183,7 +187,7 @@ public class Logic {
                 outputField.setText("");
                 putPlaceholder();
             }
-            // Put a decimal
+            // Put a decimal point
             if (e.getSource() == decButton) {
                 if (inputField.getText().contains(".")) {
                     return;
